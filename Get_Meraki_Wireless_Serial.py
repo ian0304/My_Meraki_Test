@@ -7,6 +7,7 @@ org_name = input("Enter Your Org Name: ")
 net_name = input("Enter Network Name: ")
 api_key = getpass.getpass("Enter Your API_KEY: ")
 url = 'https://api.meraki.com'
+device_list = []
 
 dashboard = meraki.DashboardAPI(
     api_key=api_key,
@@ -20,15 +21,7 @@ for org in org_list:
     if org['name'] == org_name:
         organization_id = org['id']
 
-device_list = []
-
 org_networks = dashboard.organizations.getOrganizationNetworks(organization_id, total_pages='all')
-
-for i in org_networks:
-    if i['name'] == net_name:
-        network_id = (i['id'])
-
-net_devices = dashboard.networks.getNetworkDevices(network_id)
 
 for i in org_networks:
     if i['name'] == net_name:
@@ -45,12 +38,4 @@ if device_list == []:
     print('No wireless access point in this site.')
 else:
     for i in device_list:
-        print(i['name']+ ' ' + i['serial'])
-    
-#Reboot AP
-"""
-for ap in device_list:
-    print("Rebooting {} {}".format(net_devices['']serial))
-    response = dashboard.devices.rebootDevice(ap)
-    print(response)
-"""
+        print("{} {} ".format(i['model'],i['serial']))
