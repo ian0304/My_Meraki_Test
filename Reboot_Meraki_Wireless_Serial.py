@@ -2,7 +2,7 @@ import meraki
 import pprint
 import getpass
 
-print("This script is to get Wireless Serial from Meraki Dashboard")
+print("This script is to reboot Meraki AP ~")
 org_name = input("Enter Your Org Name: ")
 net_name = input("Enter Network Name: ")
 api_key = getpass.getpass("Enter Your API_KEY: ")
@@ -30,27 +30,24 @@ for i in org_networks:
 
 net_devices = dashboard.networks.getNetworkDevices(network_id)
 
-for i in org_networks:
-    if i['name'] == net_name:
-        network_id = (i['id'])
-
-net_devices = dashboard.networks.getNetworkDevices(network_id)
-
 for i in net_devices:
     if i['model'].startswith('MR'):
         device_list.append(i)
-        
+
+print('#'* 40)
 
 if device_list == []:
     print('No wireless access point in this site.')
 else:
     for i in device_list:
-        print(i['name']+ ' ' + i['serial'])
+        print("{} {} ".format(i['model'],i['serial']))
     
 #Reboot AP
-"""
-for ap in device_list:
-    print("Rebooting {} {}".format(net_devices['']serial))
-    response = dashboard.devices.rebootDevice(ap)
+
+for i in device_list:
+    response = dashboard.devices.rebootDevice(i['serial'])
     print(response)
-"""
+    if response['success'] == True:
+        print("{} is rebooting ...".format(i['serial']))
+    else:
+        print("{} isn't online".format(i['serial']))
