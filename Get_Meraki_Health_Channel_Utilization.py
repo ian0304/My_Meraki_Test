@@ -7,6 +7,18 @@ print("This script is to get Wireless Serial from Meraki Dashboard")
 org_name = input("Enter Your Org Name: ")
 net_name = input("Enter Network Name: ")
 api_key = getpass.getpass("Enter Your API_KEY: ")
+time_range = 0-int(input("Last 1, 2 or 3 hours' Channel Utilization you want to check: "))*6
+wifi_channel = input("""
+Which wifi channel you want to check: 
+1) 2.4G
+2) 5G
+
+""")
+if wifi_channel == '1':
+    wifi_channel = 'wifi0'
+elif wifi_channel == '2':
+    wifi_channel = 'wifi1'
+
 url = 'https://api.meraki.com'
 
 dashboard = meraki.DashboardAPI(
@@ -32,28 +44,14 @@ channel_utili = dashboard.networks.getNetworkNetworkHealthChannelUtilization(net
 for i in channel_utili:
     time_stamp = []
     utilization = []
-    wifi24G_utili = channel_utili[0]['wifi0']
+    wifi24G_utili = channel_utili[0][wifi_channel]
     for xy in wifi24G_utili:
         time_stamp.append(xy['start_ts'][11:16])
         utilization.append(xy['utilization'])
     plt.figure(figsize=(15, 8))
-    plt.plot(time_stamp[-12:],utilization[-12:]) 
+    plt.plot(time_stamp[time_range:],utilization[time_range:]) 
     plt.title('{} 2.4G WIFI Utilization'.format(i['serial']))
     plt.ylabel('2.4GWIFI Utilization')
     plt.xlabel('Time')
     plt.show()
     
-    
-    
-    time_stamp = []
-    utilization = []
-    wifi5G_utili = channel_utili[0]['wifi1']
-    for xy in wifi5G_utili:
-        time_stamp.append(xy['start_ts'][11:16])
-        utilization.append(xy['utilization'])
-    plt.figure(figsize=(15, 8))
-    plt.plot(time_stamp[-12:],utilization[-12:]) 
-    plt.title('{} 5G WIFI Utilization'.format(i['serial']))
-    plt.ylabel('5GWIFI Utilization')
-    plt.xlabel('Time')
-    plt.show()
