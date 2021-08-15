@@ -6,7 +6,17 @@ print("This script is to get Wireless Serial from Meraki Dashboard")
 org_name = input("Enter Your Org Name: ")
 net_name = input("Enter Network Name: ")
 api_key = getpass.getpass("Enter Your API_KEY: ")
-url = 'https://api.meraki.com'
+url_location = input("""
+Which Meraki URL you want to access: 
+1) https://api.meraki.com
+2) https://api.meraki.cn
+
+""")
+if url_location == '1':
+    url = 'https://api.meraki.cn'
+elif url_location == '2':
+    url = 'https://api.meraki.com'
+    
 device_list = []
 
 dashboard = meraki.DashboardAPI(
