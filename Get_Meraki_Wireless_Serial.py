@@ -13,10 +13,10 @@ Which Meraki URL you want to access:
 
 """)
 if url_location == '1':
-    url = 'https://api.meraki.cn'
-elif url_location == '2':
     url = 'https://api.meraki.com'
-    
+elif url_location == '2':
+    url = 'https://api.meraki.cn'
+
 device_list = []
 
 dashboard = meraki.DashboardAPI(
