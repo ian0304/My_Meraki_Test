@@ -17,6 +17,8 @@ if url_location == '1':
 elif url_location == '2':
     url = 'https://api.meraki.cn'
 
+print(url)
+
 device_list = []
 
 dashboard = meraki.DashboardAPI(
