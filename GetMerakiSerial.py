@@ -1,4 +1,7 @@
 def login_info ():
+    '''
+    login Meraki through API, return values (dashboard, network_id, organization_id)
+    '''
     print("This script is to get serial information from Meraki Dashboard")
     url = input("""
     Which Meraki URL you want to access - 1 or 2: 
@@ -36,6 +39,10 @@ def login_info ():
 
 
 def device_serial(dashboard, network_id):
+    '''
+    Get serial list based on device type from Meraki Network section
+    Return a list of dic, key is device type, value is serial number
+    '''
     device_list = []
     device_serial_list = []
     net_devices = dashboard.networks.getNetworkDevices(network_id)
